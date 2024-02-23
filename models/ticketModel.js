@@ -7,6 +7,7 @@ const ticketModel = new Schema(
     startDate: {type: String, required: true},
     endDate: {type: String, required: true},
     numberOfDays: {type: String, required: true},
+    createdBy: {type: String, required: true},
     phone: {type: String},
     email: {type: String}
   },
