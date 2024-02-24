@@ -10,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.get('/', (req, res)=>{
-  res.json({message: 'Hi, from the root.'})
+  res.json({message: 'Hi, from the root of usersBackend.'})
 })
 
 // middlewares
