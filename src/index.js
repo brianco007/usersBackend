@@ -9,7 +9,7 @@ import cors from 'cors'
 const app = express();
 const PORT = process.env.PORT;
 
-app.get('/', (req, res)=>{
+app.get('https://gymusersdata-405b6a41e1bf.herokuapp.com', (req, res)=>{
   res.json({message: 'Hi, from the root of usersBackend!'})
 })
 
