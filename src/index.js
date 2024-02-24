@@ -9,7 +9,7 @@ import cors from 'cors'
 const app = express();
 const PORT = process.env.PORT;
 
-app.get('https://gymusersdata-405b6a41e1bf.herokuapp.com', (req, res)=>{
+app.get('/', (req, res)=>{
   res.json({message: 'Hi, from the root of usersBackend!'})
 })
 
@@ -17,7 +17,7 @@ app.get('https://gymusersdata-405b6a41e1bf.herokuapp.com', (req, res)=>{
 app.use(express.json());
 app.use(cors())
 // routes
-app.use('https://gymusersdata-405b6a41e1bf.herokuapp.com/users', mainRouter);
+app.use('/users/', mainRouter);
 app.use('/store/', storeRouter);
 app.use('/tickets/', ticketRouter);
 
