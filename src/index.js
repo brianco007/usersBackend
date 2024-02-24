@@ -7,7 +7,7 @@ import ticketRouter from '../routers/ticketRouter.js';
 import cors from 'cors'
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res)=>{
   res.json({message: 'Hi, from the root of usersBackend!'})
