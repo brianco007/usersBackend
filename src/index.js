@@ -17,7 +17,7 @@ app.get('/', (req, res)=>{
 app.use(express.json());
 app.use(cors())
 // routes
-app.use('/users/', mainRouter);
+app.use('https://gymusersdata-405b6a41e1bf.herokuapp.com/users', mainRouter);
 app.use('/store/', storeRouter);
 app.use('/tickets/', ticketRouter);
 
