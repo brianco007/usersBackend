@@ -25,3 +25,5 @@ app.use('/tickets/', ticketRouter);
 app.listen(PORT,()=>{
   console.log(`Server listening from port: ${PORT}`)
 });
+
+export default app;
