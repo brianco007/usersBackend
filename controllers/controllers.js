@@ -3,8 +3,17 @@ import userModel from '../models/models.js';
 const usersController = {
   createNewuser: async (req, res)=>{
     try{
-      const newUser = new userModel(req.body);
+      let newUser = new userModel(req.body);
+      // take out the initial date.
+      const { dateStart } = newUser;
+      // use the function to get: end date and days left
+      const arrWithInfo = calculateExpiryDate(dateStart);
+      // add property to model
+      newUser.startEndLeft = arrWithInfo;
+
+      // save in MongoDB Atlas
       const createdUser = await newUser.save();
+
       if(createdUser._id){
         res.json({message: 'User created successfully.'});
       } 
@@ -51,3 +60,32 @@ const usersController = {
 }
 
 export default usersController;
+
+function calculateExpiryDate (startDate){
+  const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Deciembre']
+
+  // START
+  const newStartDate = new Date(startDate);
+  // add more day
+  const newStartDate2 = newStartDate.getTime() + (1 * 24 * 60 * 60 * 1000)
+  const newStartDate3 = new Date(newStartDate2)
+  // formating the date
+  const formatedStartDate = ("0" + newStartDate3.getDate()).slice(-2) + " " + months[newStartDate3.getMonth()] + ", " + newStartDate3.getFullYear()
+
+  //END
+  const startDateObejct = new Date(startDate)
+  // add 30 days
+  const expiryDate = new Date(startDateObejct.getTime() + (30 * 24 * 60 * 60 * 1000)) 
+  // formating the date
+  const formatedExpiryDate = ("0" + (expiryDate.getDate())).slice(-2) + " " + months[expiryDate.getMonth()] + ", " + expiryDate.getFullYear()
+
+  //DAYS LEFT
+  const today = new Date();
+  const daysLeft = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24 ));
+    
+  return {
+    start: formatedStartDate,
+    end: formatedExpiryDate,
+    daysLeft,
+  }
+}

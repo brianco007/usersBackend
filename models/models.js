@@ -7,6 +7,7 @@ const userModel = new Schema(
     phone: {type: String},
     email: {type: String},
     dateStart: {type: String, required: true},
+    startEndLeft: {type: Object},
     createdBy: {type: String}
   },
   {versionKey:false , timestamps: true}
