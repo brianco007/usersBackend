@@ -4,11 +4,12 @@ const userModel = new Schema(
   {
     fullName: {type: String, required: true},
     idNumber: {type: String, required: true},
+    dateStart: {type: String, required: true},
+    createdBy: {type: String},
+    startEndLeft: {type: Object},
     phone: {type: String},
     email: {type: String},
-    dateStart: {type: String, required: true},
-    startEndLeft: {type: Object},
-    createdBy: {type: String}
+    notes: {type: String}
   },
   {versionKey:false , timestamps: true}
 );
