@@ -62,7 +62,7 @@ export default ticketsController;
 function formatDate(dateInString){
   const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Deciembre']
 
-  const dateInMili = new Date(dateInString).getTime()  + (1 * 24 * 60 * 60 * 1000);
+  const dateInMili = new Date(dateInString).getTime()  //+ (1 * 24 * 60 * 60 * 1000);
   const currentDate = new Date(dateInMili);
 
   const formatedDate = ("0" + currentDate.getDate()).slice(-2) + " " + months[currentDate.getMonth()] + ", " + currentDate.getFullYear()
