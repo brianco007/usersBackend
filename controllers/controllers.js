@@ -67,7 +67,7 @@ function calculateExpiryDate (startDate){
   // START
   const newStartDate = new Date(startDate);
   // add more day
-  const newStartDate2 = newStartDate.getTime() + (1 * 24 * 60 * 60 * 1000)
+  const newStartDate2 = newStartDate.getTime() //+ (1 * 24 * 60 * 60 * 1000)
   const newStartDate3 = new Date(newStartDate2)
   // formating the date
   const formatedStartDate = ("0" + newStartDate3.getDate()).slice(-2) + " " + months[newStartDate3.getMonth()] + ", " + newStartDate3.getFullYear()
