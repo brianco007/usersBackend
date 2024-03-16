@@ -4,12 +4,12 @@ const usersController = {
   createNewuser: async (req, res)=>{
     try{
       let newUser = new userModel(req.body);
-      // take out the initial date.
-      const { dateStart } = newUser;
+      // take out the things you need.
+      const { startDate, endDate } = newUser;
       // use the function to get: end date and days left
-      const arrWithInfo = calculateExpiryDate(dateStart);
+      const arrWithInfo = formatDatesAndGetDaysLeft(startDate, endDate);
       // add property to model
-      newUser.startEndLeft = arrWithInfo;
+      newUser.datesToShow = arrWithInfo;
 
       // save in MongoDB Atlas
       const createdUser = await newUser.save();
@@ -61,31 +61,31 @@ const usersController = {
 
 export default usersController;
 
-function calculateExpiryDate (startDate){
+function formatDatesAndGetDaysLeft (startDate, endDate){
   const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Deciembre']
 
   // START
-  const newStartDate = new Date(startDate);
-  // add more day
-  const newStartDate2 = newStartDate.getTime() //+ (1 * 24 * 60 * 60 * 1000)
-  const newStartDate3 = new Date(newStartDate2)
+  const stringToDate = new Date(startDate);
+  // // add more day
+  // const newStartDate2 = newStartDate.getTime() //+ (1 * 24 * 60 * 60 * 1000)
+  // const newStartDate3 = new Date(newStartDate2)
   // formating the date
-  const formatedStartDate = ("0" + newStartDate3.getDate()).slice(-2) + " " + months[newStartDate3.getMonth()] + ", " + newStartDate3.getFullYear()
+  const formatedStartDate = ("0" + stringToDate.getDate()).slice(-2) + " " + months[stringToDate.getMonth()] + ", " + stringToDate.getFullYear()
 
-  //END
-  const startDateObejct = new Date(startDate)
-  // add 30 days
-  const expiryDate = new Date(startDateObejct.getTime() + (30 * 24 * 60 * 60 * 1000)) 
+  // END
+  const stringToDate2 = new Date(endDate)
+  // // add 30 days
+  // const expiryDate = new Date(startDateObejct.getTime() + (30 * 24 * 60 * 60 * 1000)) 
   // formating the date
-  const formatedExpiryDate = ("0" + (expiryDate.getDate())).slice(-2) + " " + months[expiryDate.getMonth()] + ", " + expiryDate.getFullYear()
+  const formatedEndDate = ("0" + (stringToDate2.getDate())).slice(-2) + " " + months[stringToDate2.getMonth()] + ", " + stringToDate2.getFullYear()
 
   //DAYS LEFT
   const today = new Date();
-  const daysLeft = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24 ));
+  const daysLeft = Math.ceil((stringToDate2.getTime() - today.getTime()) / (1000 * 60 * 60 * 24 ));
     
   return {
     start: formatedStartDate,
-    end: formatedExpiryDate,
-    daysLeft,
+    end: formatedEndDate,
+    daysLeft
   }
 }
