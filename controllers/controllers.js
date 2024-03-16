@@ -42,7 +42,12 @@ const usersController = {
 
   updateUserInfo: async (req, res)=>{
     try{
+      let { startDate, endDate } = req.body
+      const arrWithInfo = formatDatesAndGetDaysLeft(startDate, endDate);
+      req.body.datesToShow = arrWithInfo
+      
       const newInfo = await userModel.findByIdAndUpdate(req.params.id , req.body);
+      console.log(newInfo)
       res.json({message: "User's info has been updated."});
     } catch(error){
       res.json({message: 'Error. Make sure the user ID is correct and you include all the required fields.'});
