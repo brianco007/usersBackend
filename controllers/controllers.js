@@ -86,7 +86,7 @@ function formatDatesAndGetDaysLeft (startDate, endDate){
 
   //DAYS LEFT
   const today = new Date();
-  const daysLeft = Math.ceil((stringToDate2.getTime() - today.getTime()) / (1000 * 60 * 60 * 24 ));
+  const daysLeft = Math.ceil((stringToDate2.getTime() - today.getTime()) / (1000 * 60 * 60 * 24 )) + 1; 
     
   return {
     start: formatedStartDate,
