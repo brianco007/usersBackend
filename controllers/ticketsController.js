@@ -40,6 +40,12 @@ const ticketsController = {
 
   updateTicket: async (req, res)=>{
     try{
+      let { startDate, endDate } = req.body;
+      const newStartDate = formatDate(startDate);
+      const newEndDate = formatDate(endDate);
+      req.body.startDate = newStartDate;
+      req.body.endDate = newEndDate;
+
       const newInfo = await ticketModel.findByIdAndUpdate(req.params.id , req.body);
       res.json({message: "The ticket info has been updated."});
     } catch(error){
