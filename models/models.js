@@ -10,8 +10,7 @@ const userModel = new Schema(
     datesToShow: {type: Object},
     phone: {type: String},
     email: {type: String},
-    notes: {type: String},
-    _id: {type: String}
+    notes: {type: String}
   },
   {versionKey:false , timestamps: true}
 );
