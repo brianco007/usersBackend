@@ -3,12 +3,13 @@ import ticketModel from '../models/ticketModel.js';
 const ticketsController = {
   createNewTicket: async (req, res)=>{
     try{
-      const newTicket = new ticketModel(req.body);
-      const { endDate, startDate } = newTicket;
-      const newEndDate = formatDate(endDate);
-      const newStartDate = formatDate(startDate);
-      newTicket.endDate = newEndDate;
-      newTicket.startDate = newStartDate;
+      let newTicket = new ticketModel(req.body);
+      // take out the things you need.
+      const { startDate, endDate } = newTicket;
+      // use the function to get: end date and days left
+      const arrWithInfo = formatDatesAndGetDaysLeft(startDate, endDate);
+      // add property to model
+      newTicket.datesToShow = arrWithInfo;
 
       const createdTicket = await newTicket.save();
       if(createdTicket._id){
@@ -40,11 +41,9 @@ const ticketsController = {
 
   updateTicket: async (req, res)=>{
     try{
-      let { startDate, endDate } = req.body;
-      const newStartDate = formatDate(startDate);
-      const newEndDate = formatDate(endDate);
-      req.body.startDate = newStartDate;
-      req.body.endDate = newEndDate;
+      let { startDate, endDate } = req.body
+      const arrWithInfo = formatDatesAndGetDaysLeft(startDate, endDate);
+      req.body.datesToShow = arrWithInfo
 
       const newInfo = await ticketModel.findByIdAndUpdate(req.params.id , req.body);
       res.json({message: "The ticket info has been updated."});
@@ -65,13 +64,31 @@ const ticketsController = {
 
 export default ticketsController;
 
-function formatDate(dateInString){
+function formatDatesAndGetDaysLeft (startDate, endDate){
   const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Deciembre']
 
-  const dateInMili = new Date(dateInString).getTime()  //+ (1 * 24 * 60 * 60 * 1000);
-  const currentDate = new Date(dateInMili);
+  // START
+  const stringToDate = new Date(startDate);
+  // // add more day
+  // const newStartDate2 = newStartDate.getTime() //+ (1 * 24 * 60 * 60 * 1000)
+  // const newStartDate3 = new Date(newStartDate2)
+  // formating the date
+  const formatedStartDate = ("0" + stringToDate.getDate()).slice(-2) + " " + months[stringToDate.getMonth()] + ", " + stringToDate.getFullYear()
 
-  const formatedDate = ("0" + currentDate.getDate()).slice(-2) + " " + months[currentDate.getMonth()] + ", " + currentDate.getFullYear()
+  // END
+  const stringToDate2 = new Date(endDate)
+  // // add 30 days
+  // const expiryDate = new Date(startDateObejct.getTime() + (30 * 24 * 60 * 60 * 1000)) 
+  // formating the date
+  const formatedEndDate = ("0" + (stringToDate2.getDate())).slice(-2) + " " + months[stringToDate2.getMonth()] + ", " + stringToDate2.getFullYear()
 
-  return formatedDate;
+  //DAYS LEFT
+  const today = new Date();
+  const daysLeft = Math.ceil((stringToDate2.getTime() - today.getTime()) / (1000 * 60 * 60 * 24 )); 
+    
+  return {
+    start: formatedStartDate,
+    end: formatedEndDate,
+    daysLeft,
+  }
 }
